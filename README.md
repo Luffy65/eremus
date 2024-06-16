@@ -1,4 +1,4 @@
-credits to https://github.com/SalvoCalcagno/eremus
+Original author: https://github.com/SalvoCalcagno/eremus
 
 
 # EREMUS
