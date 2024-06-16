@@ -5,7 +5,7 @@ Original author: https://github.com/SalvoCalcagno/eremus
 
 ## Install the package
 ```
-pip install -e git+https://github.com/SalvoCalcagno/eremus.git#egg=eremus
+pip install -e git+https://github.com/Luffy65/eremus.git#egg=eremus
 ```
 
 ## View Code Docs
