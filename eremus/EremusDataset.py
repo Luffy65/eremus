@@ -1,12 +1,26 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import subprocess
+import sys
 import mne
-import torch
+
+# Function to install a package using pip
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Try to import the torch module, and install it if not found
+try:
+    import torch
+except ImportError:
+    print("torch not found. Installing...")
+    install('torch')
+    import torch
+
 import warnings
 import numpy as np
 import pandas as pd
-#from math import isnan
+# from math import isnan
 from torch.utils.data import Dataset
 
 class EremusDataset(Dataset):

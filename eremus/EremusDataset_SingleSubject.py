@@ -1,3 +1,10 @@
+import subprocess
+import sys
+
+# Function to install a package using pip
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
 import mne
 import math
 import json
@@ -7,7 +14,15 @@ import numpy as np
 import pandas as pd
 from math import isnan
 from typing import Union
-from torchvision import transforms, utils
+
+# Try to import the torchvision module, and install it if not found
+try:
+    from torchvision import transforms, utils
+except ImportError:
+    print("torchvision not found. Installing...")
+    install('torchvision')
+    from torchvision import transforms, utils
+
 from torch.utils.data import Dataset, DataLoader
 
 class EremusDataset_SingleSubject_FE(Dataset):

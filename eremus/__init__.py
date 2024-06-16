@@ -1,5 +1,7 @@
 import pkgutil
 import importlib
+import importlib.util
+
 try:
     import comet_ml
     has_cml = True
@@ -10,6 +12,12 @@ __all__ = []
 for loader, module_name, is_pkg in pkgutil.walk_packages(__path__):
     if is_pkg or "." in module_name:
         continue
+    print(f"Importing module: {module_name}")  # Debug print
     __all__.append(module_name)
-    module = importlib.import_module(module_name)
-    globals()[module_name] = module
+    try:
+        spec = importlib.util.find_spec(f'.{module_name}', package=__name__)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        globals()[module_name] = module
+    except Exception as e:
+        print(f"Error importing module {module_name}: {e}")  # Debug print
