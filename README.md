@@ -16,11 +16,11 @@ Move to eremus folder (main repository folder) and change the configuration.txt 
 
 
 ## Install the package
-You must be in the folder with setup.py. The command is `pip install -e .`, so to move into the right directory and begin installation, just write:
+You must be in the folder with setup.py. The command is `pip install -e .`. To simultaneously move into the right directory and begin installation, just write:
 ```
 !cd eremus && pip install -e .
 ```
-Or, if you want to clone+install at the same time:
+Or, if you want to clone this repository and install the package at the same time:
 ```
 pip install -e git+https://github.com/Luffy65/eremus.git#egg=eremus
 ```
