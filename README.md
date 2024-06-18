@@ -12,7 +12,7 @@ Original author: https://github.com/SalvoCalcagno/eremus
 clone into a directory of your choice.
 
 ## Configure
-Move to eremus folder (main repository folder) and change the configuration.txt specifying the absolute path to EREMUSdataset. If you are using Windows remember to include escape characters in your path e.g. if your path is "C:\path\to\dataset" write "C:\\\path\\\to\\\dataset\\" (two backslashes instead of a single one)
+Move to eremus folder (main repository folder) and change the configuration.txt specifying the absolute path to EREMUSdataset. If you are using Windows remember to include escape characters in your path e.g. if your path is "C:\path\to\dataset" write "C:\\\path\\\to\\\dataset\\\\" (two backslashes instead of a single one)
 
 
 ## Install the package
