@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import subprocess
-import sys
+import subprocess # Per istallare i package mancanti
+import sys        # Per installare i package mancanti
 import mne
 
 # Function to install a package using pip
@@ -20,11 +20,12 @@ except ImportError:
 import warnings
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 # from math import isnan
 from torch.utils.data import Dataset
 
 class EremusDataset(Dataset):
-    """A dataset for Emotion Recognition using EEG data and MUsical Stimuli.
+    """A dataset for Emotion Recognition using EEG data and Musical Stimuli.
     
     Parameters
     ------------------
@@ -67,6 +68,17 @@ class EremusDataset(Dataset):
         self.select_data = select_data
         self.label_transform = label_transform
         self.args = args
+        
+        # if preprocessed data, load data in memory
+        if self.data_type == 2:
+            eeg_files = self.eeg_data.iloc[indices]['filename_preprocessed']
+            # convert to set
+            eeg_files = set(eeg_files)
+            # load data
+            self.data = {
+                eeg_file: np.load(self.eeg_root_dir + eeg_file, mmap_mode='r')['arr_0'] for eeg_file in tqdm(eeg_files)
+            }
+            
 
     def __len__(self):
         """
@@ -78,7 +90,7 @@ class EremusDataset(Dataset):
 
     def __getitem__(self, idx):
         """
-        It returns a single sample. It is invoked when tou access the file with the brackets notazion (e.g. eremus[0]).
+        It returns a single sample. It is invoked when you access the file with the brackets notazion (e.g. z_eremus[0]).
         """
         if torch.is_tensor(idx):
             idx = idx.tolist()
@@ -107,7 +119,8 @@ class EremusDataset(Dataset):
                 raw_eeg = mne.io.read_raw_eeglab(self.eeg_root_dir + eeg_file, verbose = False)
             elif self.data_type == self.DATA_PREPROCESSED:
                 eeg_file = self.eeg_data.iloc[idx]['filename_preprocessed']
-                raw_eeg = np.load(self.eeg_root_dir + eeg_file, mmap_mode='r')['arr_0'][:, start:stop]
+                raw_eeg = self.data[eeg_file][:, start:stop]
+                #raw_eeg = np.load(self.eeg_root_dir + eeg_file, mmap_mode='r')['arr_0'][:, start:stop]
             else:
                 raise Exception('Please provide correct data type')
         
@@ -132,7 +145,12 @@ class EremusDataset(Dataset):
         else:
             emotion = gew_emotion1[0]
 
-        sample = {'eeg': raw_eeg, 'emotion': emotion}
+        sample = {
+            'eeg': raw_eeg, 
+            'emotion': emotion, 
+            'subject_id': self.eeg_data.iloc[idx]['subject_id']
+        }
+        
 
         if self.transform:
             sample = self.transform(sample)
